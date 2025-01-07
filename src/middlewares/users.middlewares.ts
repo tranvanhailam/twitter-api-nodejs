@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express'
+import { checkSchema } from 'express-validator'
+import { validate } from '~/utils/validation'
 
-export const loginValidator = (req: Request, res: Response, next: NextFunction) => { //Xuất module
+export const loginValidator = (req: Request, res: Response, next: NextFunction) => {
+  //Xuất module
   const { email, password } = req.body
   if (!email || !password) {
     res.status(400).json({
@@ -10,3 +13,79 @@ export const loginValidator = (req: Request, res: Response, next: NextFunction) 
     next()
   }
 }
+
+export const registerValidator = validate(
+  checkSchema({
+    name: {
+      notEmpty: true,
+      isString: true,
+      isLength: {
+        options: {
+          min: 5,
+          max: 100
+        },
+        errorMessage: 'Ten toi thieu 5 va toi da 100 ky tu'
+      },
+      trim: true
+    },
+    email: {
+      notEmpty: true,
+      isEmail: true,
+      trim: true
+    },
+    password: {
+      notEmpty: true,
+      isString: true,
+      isStrongPassword: {
+        options: {
+          minLength: 6,
+          minLowercase: 1,
+          minUppercase: 1,
+          minNumbers: 1,
+          minSymbols: 1
+        }
+      },
+      isLength: {
+        options: {
+          min: 6,
+          max: 50
+        }
+      }
+    },
+    confirm_password: {
+      notEmpty: true,
+      isString: true,
+      isStrongPassword: {
+        options: {
+          minLength: 6,
+          minLowercase: 1,
+          minUppercase: 1,
+          minNumbers: 1,
+          minSymbols: 1
+        }
+      },
+      isLength: {
+        options: {
+          min: 6,
+          max: 50
+        }
+      },
+      custom: {
+        options: (value, { req }) => {
+          if (value !== req.body.password) {
+            throw new Error('Mat khau khong khop')
+          }
+          return true
+        }
+      }
+    },
+    date_of_birth: {
+      isISO8601: {
+        options: {
+          strict: true,
+          strictSeparator: true
+        }
+      }
+    }
+  })
+)

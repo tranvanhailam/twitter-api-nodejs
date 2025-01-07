@@ -22,7 +22,7 @@ export const registerController = async (req: Request, res: Response) => {
   const { email, password } = req.body
 
   try {
-    const result = await usersService.register({ email, password })
+    const result = await usersService.register({ email, password }) // Gọi đến service để xử lý
 
     console.log(result)
 

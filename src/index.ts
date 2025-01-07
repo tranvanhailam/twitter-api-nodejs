@@ -2,7 +2,7 @@ import express from 'express'
 import { usersRouter } from '~/routes/user.routes'
 import { databaseService } from '~/services/database.services'
 const app = express()
-const port = 6000
+const port = 3000
 
 app.use(express.json()) //App handler
 
