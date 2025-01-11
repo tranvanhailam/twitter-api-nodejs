@@ -4,9 +4,10 @@ import User from '~/models/schemas/User.schema'
 import usersService from '~/services/users.services'
 
 //Xuất module - Có thể tương tác với service
-export const loginController = (req: Request, res: Response) => {
+export const loginController = async (req: Request, res: Response) => {
   const { email, password } = req.body
-  if (email === 'hailamtranvan@gmail.com' && password === '26102004') {
+  const exists = await usersService.login({ email, password })
+  if (exists) {
     res.status(200).json({
       message: 'Login success'
     })
@@ -26,9 +27,8 @@ export const registerController = async (req: Request, res: Response) => {
 
     console.log(result)
 
-    res.json({
-      message: 'Register success',
-      result
+    res.status(200).json({
+      message: 'Register success'
     })
   } catch (error) {
     console.log(error)

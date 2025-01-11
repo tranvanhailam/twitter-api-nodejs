@@ -9,16 +9,8 @@ export const validate = (validation: RunnableValidationChains<ValidationChain>) 
 
     const result = validationResult(req) //Lấy ra lỗi
     if (result.isEmpty()) {
-      next()
+      return next()
     }
     res.status(400).json({ error: result.mapped() })
   }
 }
-
-// app.post('/signup', validate([
-//   body('email').isEmail(),
-//   body('password').isLength({ min: 6 })
-// ]), async (req, res, next) => {
-//   // request is guaranteed to not have any validation errors.
-//   const user = await User.create({ ... });
-// });
