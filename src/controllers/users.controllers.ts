@@ -19,6 +19,9 @@ export const loginController = async (req: Request, res: Response) => {
 }
 
 export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
+  //ParamsDictionary: Kiểu dữ liệu của các tham số URL.
+  // any: Kiểu dữ liệu cho response trả về từ controller.
+  // RegisterReqBody: Kiểu dữ liệu của req.body
   //Xuất module - Có thể tương tác với service
   try {
     const result = await usersService.register(req.body) // Gọi đến service để xử lý
@@ -26,11 +29,11 @@ export const registerController = async (req: Request<ParamsDictionary, any, Reg
     console.log(result)
 
     res.status(200).json({
-      message: 'Register success'
+      message: 'Register success',
+      result
     })
   } catch (error) {
     console.log(error)
-
     res.status(400).json({
       error: 'Register failed: ' + error
     })
