@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
-import { databaseService } from '~/services/database.services'
-import User from '~/models/schemas/User.schema'
+import { ParamsDictionary } from 'express-serve-static-core' //  được sử dụng để biểu diễn các tham số (params) được trích xuất từ URL khi sử dụng các route động trong Express.
 import usersService from '~/services/users.services'
+import { RegisterReqBody } from '~/models/requests/User.requests'
 
 //Xuất module - Có thể tương tác với service
 export const loginController = async (req: Request, res: Response) => {
@@ -18,12 +18,10 @@ export const loginController = async (req: Request, res: Response) => {
   }
 }
 
-export const registerController = async (req: Request, res: Response) => {
+export const registerController = async (req: Request<ParamsDictionary, any, RegisterReqBody>, res: Response) => {
   //Xuất module - Có thể tương tác với service
-  const { email, password } = req.body
-
   try {
-    const result = await usersService.register({ email, password }) // Gọi đến service để xử lý
+    const result = await usersService.register(req.body) // Gọi đến service để xử lý
 
     console.log(result)
 
