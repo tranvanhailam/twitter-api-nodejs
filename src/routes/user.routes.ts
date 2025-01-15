@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { loginValidator, registerValidator } from '~/middlewares/users.middlewares' //Nhập module
 import { loginController, registerController } from '~/controllers/users.controllers'
+import { wrapRequestHandler } from '~/utils/handlers'
 const usersRouter = Router()
 
 usersRouter.post('/login', loginValidator, loginController)
@@ -14,6 +15,9 @@ usersRouter.post('/login', loginValidator, loginController)
  *
  */
 
-usersRouter.post('/register', registerValidator, registerController)
+usersRouter.post('/register', registerValidator, wrapRequestHandler(registerController))
+
+// wrapAsync trả về 1 request hanller
+// Nếu xảy ra lỗi sẽ chạy đến middleware errorhandle trong index.ts do bên cạnh ko khai báo error handler
 
 export { usersRouter }
